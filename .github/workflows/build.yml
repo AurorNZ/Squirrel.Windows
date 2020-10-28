@@ -1,0 +1,45 @@
+name: Build Squirrel.Windows
+
+on: push
+
+jobs:
+  test:
+    runs-on: windows-latest
+    timeout-minutes: 10
+
+    env:
+      NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages/
+
+    steps:
+
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+        fetch-depth: 0
+
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.0.2
+
+    - name: Cache nuget packages
+      id: cache-nuget
+      uses: actions/cache@v2
+      with:
+        path: ${{ github.workspace }}/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
+
+    - name: NuGet restore
+      run: ./.NuGet/NuGet.exe restore
+
+    - name: Build Squirrel.Windows solution
+      run: msbuild /p:Configuration=Release     
+
+    - name: Prepare artifact
+      shell: bash
+      run: |
+        vendor/7zip/7z.exe a Squirrel.Windows.zip @electron-builder.listfile.txt
+
+    - uses: actions/upload-artifact@v2
+      with:
+        path: Squirrel.Windows.zip
