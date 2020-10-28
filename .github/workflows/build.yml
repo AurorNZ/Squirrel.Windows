@@ -11,42 +11,60 @@ jobs:
       NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages/
 
     steps:
-    - uses: actions/checkout@v2
-      with:
-        submodules: recursive
-        fetch-depth: 0
+      - run: touch test.txt
+        shell: bash
 
-    - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.0.2
+      - run: touch test2.txt
+        shell: bash
 
-    - name: Cache nuget packages
-      id: cache-nuget
-      uses: actions/cache@v2
-      with:
-        path: ${{ github.workspace }}/.nuget/packages
-        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-nuget-
+      - run: touch cat1.txt
+        shell: bash
 
-    - name: NuGet restore
-      run: ./.NuGet/NuGet.exe restore
+      - run: touch cat2.txt
+        shell: bash
 
-    - name: Build Squirrel.Windows solution
-      run: msbuild /p:Configuration=Release     
+      - name: Test Zip
+        shell: bash
+        run: |
+          zip --junk-paths test.txt test2.txt cat*.txt
+
+
+    # - uses: actions/checkout@v2
+    #   with:
+    #     submodules: recursive
+    #     fetch-depth: 0
+
+    # - name: Add msbuild to PATH
+    #   uses: microsoft/setup-msbuild@v1.0.2
+
+    # - name: Cache nuget packages
+    #   id: cache-nuget
+    #   uses: actions/cache@v2
+    #   with:
+    #     path: ${{ github.workspace }}/.nuget/packages
+    #     key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+    #     restore-keys: |
+    #       ${{ runner.os }}-nuget-
+
+    # - name: NuGet restore
+    #   run: ./.NuGet/NuGet.exe restore
+
+    # - name: Build Squirrel.Windows solution
+    #   run: msbuild /p:Configuration=Release     
       
-    - uses: actions/upload-artifact@v2
-      with:
-        name: Squirrel.Windows
-        path: |
-          build/Release/Net45/Squirrel.*
-          build/Release/Net45/NuGet.Squirrel.*
-          build/Release/Win32/Setup.exe
-          build/Release/Win32/WriteZipToSetup.exe
-          build/Release/Win32/StubExecutable.exe
-          build/Release/Net45/Update.exe
-          build/Release/Net45/Update-Mono.exe
-          build/Release/Net45/Update.com
-          build/Release/Net45/SyncReleases.exe
-          src/Update/signtool.exe
-          src/Update/rcedit.exe
-          vendor/wix/*
+    # - uses: actions/upload-artifact@v2
+    #   with:
+    #     name: Squirrel.Windows
+    #     path: |
+    #       # build/Release/Net45/Squirrel.*
+    #       # build/Release/Net45/NuGet.Squirrel.*
+    #       build/Release/Win32/Setup.exe
+    #       build/Release/Win32/WriteZipToSetup.exe
+    #       build/Release/Win32/StubExecutable.exe
+    #       build/Release/Net45/Update.exe
+    #       build/Release/Net45/Update-Mono.exe
+    #       build/Release/Net45/Update.com
+    #       build/Release/Net45/SyncReleases.exe
+    #       # src/Update/signtool.exe
+    #       # src/Update/rcedit.exe
+    #       vendor/wix/*
