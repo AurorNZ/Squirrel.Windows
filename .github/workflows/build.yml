@@ -7,10 +7,24 @@ jobs:
     runs-on: windows-latest
     timeout-minutes: 10
 
+    env:
+      NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
+
     steps:
     - uses: actions/checkout@v2
       with:
         submodules: recursive
+
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.0.2
+
+    - name: Cache nuget packages
+      uses: actions/cache@v2
+      with:
+        path: ${{ github.workspace }}/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
 
     - name: NuGet restore
       run: .\.NuGet\NuGet.exe restore
