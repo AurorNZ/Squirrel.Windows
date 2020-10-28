@@ -1,0 +1,8 @@
+﻿.\build\Release\Win32\Setup.exe
+.\build\Release\Win32\WriteZipToSetup.exe
+.\build\Release\Win32\StubExecutable.exe
+.\build\Release\Net45\Update.exe
+.\build\Release\Net45\Update-Mono.exe
+.\build\Release\Net45\Update.com
+.\build\Release\Net45\SyncReleases.exe
+.\vendor\wix\*
