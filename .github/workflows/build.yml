@@ -31,4 +31,10 @@ jobs:
       run: .\.NuGet\NuGet.exe restore
 
     - name: MsBuild
-      run: msbuild /p:Configuration=Release      
+      run: msbuild /p:Configuration=Release     
+      
+    - uses: actions/upload-artifact@v2
+      if: always()
+      with:
+        name: Squirrel.Windows
+        path: build/Release/net45
