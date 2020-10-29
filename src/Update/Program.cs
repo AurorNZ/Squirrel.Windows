@@ -322,7 +322,11 @@ namespace Squirrel.Update
             this.Log().Info("Bootstrapper EXE found at:" + bootstrapperExe);
 
             var di = new DirectoryInfo(targetDir);
-            File.Copy(package, Path.Combine(di.FullName, Path.GetFileName(package)), true);
+            var destination = Path.Combine(di.FullName, Path.GetFileName(package));
+            if (package != destination)
+            {
+                File.Copy(package, destination, true);
+            }
 
             var allNuGetFiles = di.EnumerateFiles()
                 .Where(x => x.Name.EndsWith(".nupkg", StringComparison.OrdinalIgnoreCase));
