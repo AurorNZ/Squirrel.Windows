@@ -2,3 +2,6 @@
 	path = vendor/nuget
 	url = https://github.com/paulcbetts/NuGet
 	branch = fix-prerelease-comparison
+[submodule "src/Squirrel/VCDiff"]
+	path = src/Squirrel/VCDiff
+	url = git@github.com:Metric/VCDiff.git
