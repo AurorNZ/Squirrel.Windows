@@ -230,13 +230,10 @@ namespace Squirrel.Bsdiff
             WriteInt64(controlEndPosition - startPosition - c_headerSize, header, 8);
 
             // write compressed diff data
-            if (dblen > 0)
+            using (WrappingStream wrappingStream = new WrappingStream(output, Ownership.None))
+            using (var bz2Stream = new BZip2Stream(wrappingStream, CompressionMode.Compress))
             {
-                using (WrappingStream wrappingStream = new WrappingStream(output, Ownership.None))
-                using (var bz2Stream = new BZip2Stream(wrappingStream, CompressionMode.Compress))
-                {
-                    bz2Stream.Write(db, 0, dblen);
-                }
+                bz2Stream.Write(db, 0, dblen);
             }
 
             // compute size of compressed diff data
@@ -244,13 +241,10 @@ namespace Squirrel.Bsdiff
             WriteInt64(diffEndPosition - controlEndPosition, header, 16);
 
             // write compressed extra data
-            if (eblen > 0)
+            using (WrappingStream wrappingStream = new WrappingStream(output, Ownership.None))
+            using (var bz2Stream = new BZip2Stream(wrappingStream, CompressionMode.Compress))
             {
-                using (WrappingStream wrappingStream = new WrappingStream(output, Ownership.None))
-                using (var bz2Stream = new BZip2Stream(wrappingStream, CompressionMode.Compress))
-                {
-                    bz2Stream.Write(eb, 0, eblen);
-                }
+                bz2Stream.Write(eb, 0, eblen);
             }
 
             // seek to the beginning, write the header, then seek back to end
