@@ -346,7 +346,7 @@ namespace Squirrel
             void executeSelfUpdate(SemanticVersion currentVersion)
             {
                 var targetDir = getDirectoryForRelease(currentVersion);
-                var newSquirrel = Path.Combine(targetDir.FullName, "Squirrel.exe");
+                var newSquirrel = Path.Combine(targetDir.FullName, "Update.exe");
                 if (!File.Exists(newSquirrel)) {
                     return;
                 }
