@@ -129,7 +129,7 @@ namespace Squirrel
                     .Where(x => x.StartsWith("lib", StringComparison.InvariantCultureIgnoreCase))
                     .Where(x => !x.EndsWith(".shasum", StringComparison.InvariantCultureIgnoreCase))
                     .Where(x => !x.EndsWith(".diff", StringComparison.InvariantCultureIgnoreCase) ||
-                                !deltaPathRelativePaths.Contains(x.Replace(".diff", ".bsdiff")) ||
+                                !deltaPathRelativePaths.Contains(x.Replace(".diff", ".bsdiff")) &&
                                 !deltaPathRelativePaths.Contains(x.Replace(".diff", ".vcdiff")))
                     .ForEach(file => {
                         pathsVisited.Add(Regex.Replace(file, diffFileRegex, "").ToLowerInvariant());
