@@ -38,7 +38,7 @@ jobs:
       run: ./.NuGet/NuGet.exe restore
 
     - name: Build Squirrel.Windows solution
-      run: msbuild /p:Configuration=Release     
+      run: msbuild /p:Configuration=Release /property:Platform=x64   
 
     - name: Prepare artifact
       shell: bash
