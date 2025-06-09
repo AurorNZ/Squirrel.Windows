@@ -17,7 +17,7 @@ jobs:
 
     steps:
 
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       with:
         submodules: recursive
         fetch-depth: 0
@@ -27,7 +27,7 @@ jobs:
 
     - name: Cache nuget packages
       id: cache-nuget
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: ${{ github.workspace }}/.nuget/packages
         key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
@@ -45,6 +45,6 @@ jobs:
       run: |
         vendor/7zip/7z.exe a Squirrel.Windows.zip @electron-builder.listfile.txt
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v4
       with:
         path: Squirrel.Windows.zip
