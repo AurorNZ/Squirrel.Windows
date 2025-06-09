@@ -1,6 +1,6 @@
 name: Build Squirrel.Windows
 
-on: 
+on:
   pull_request:
   push:
     branches:
@@ -23,7 +23,9 @@ jobs:
         fetch-depth: 0
 
     - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.0.2
+      uses: microsoft/setup-msbuild@v2
+      with:
+        vs-version: 14
 
     - name: Cache nuget packages
       id: cache-nuget
@@ -38,7 +40,7 @@ jobs:
       run: ./.NuGet/NuGet.exe restore
 
     - name: Build Squirrel.Windows solution
-      run: msbuild /p:Configuration=Release /property:Platform=x64   
+      run: msbuild /p:Configuration=Release /property:Platform=x64
 
     - name: Prepare artifact
       shell: bash
