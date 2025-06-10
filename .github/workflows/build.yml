@@ -43,12 +43,8 @@ jobs:
       run: msbuild /p:Configuration=Release /property:Platform=x64
 
     - name: List built binaries
-      shell: powershell
-      run: |
-        Get-ChildItem -Path ".\src" -Recurse -Directory | Where-Object {$_.FullName -like "*\bin"} | ForEach-Object {
-          Write-Host "`n----- $($_.FullName) -----"
-          Get-ChildItem -Path $_.FullName
-        }
+      shell: bash
+      run: ls -alR ./src/**/bin
 
     - name: Prepare artifact
       shell: bash
